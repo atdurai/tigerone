@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#101317" />
+    <title>TigerOne Business System — Prototype</title>
+    <link rel="icon" href="assets/tigerone-mark.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="prototype-note">
+      <span>Interactive prototype</span>
+      <strong>No data will be saved</strong>
+    </div>
+
+    <section class="login-view" id="login-view">
+      <div class="login-brand">
+        <img src="assets/tigerone-logo.png" alt="TigerOne" />
+        <div>
+          <span class="eyebrow">Business command centre</span>
+          <h1>One system.<br />Total control.</h1>
+          <p>Billing, inventory and reports—connected in one dependable workspace.</p>
+        </div>
+        <div class="module-strip">
+          <span><b>₹</b> Billing</span>
+          <span><b>▦</b> Inventory</span>
+          <span><b>↗</b> Reports</span>
+        </div>
+      </div>
+      <div class="login-form-side">
+        <form class="login-card" id="login-form">
+          <span class="secure-label"><i></i> Secure workspace</span>
+          <h2>Welcome back</h2>
+          <p>Sign in to manage your business operations.</p>
+          <label for="login-email">Email address</label>
+          <div class="field"><span>@</span><input id="login-email" type="email" value="admin@tigerone.in" required /></div>
+          <div class="label-line"><label for="login-password">Password</label><a href="#">Forgot password?</a></div>
+          <div class="field"><span>●</span><input id="login-password" type="password" value="prototype" required /><button type="button" id="toggle-password">Show</button></div>
+          <label class="checkbox"><input type="checkbox" checked /> Keep me signed in</label>
+          <button class="primary-button" type="submit">Sign in to TigerOne <span>→</span></button>
+          <small>For this prototype, use any email and password.</small>
+        </form>
+      </div>
+    </section>
+
+    <div class="app-shell" id="app-shell" hidden>
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+          <img src="assets/tigerone-logo.png" alt="TigerOne" />
+          <button class="close-nav" id="close-nav" aria-label="Close navigation">×</button>
+        </div>
+        <nav>
+          <a href="#dashboard" data-screen="dashboard" class="active"><span>⌂</span> Dashboard</a>
+          <p>Operations</p>
+          <a href="#billing" data-screen="billing"><span>₹</span> Billing</a>
+          <a href="#inventory" data-screen="inventory"><span>▦</span> Inventory</a>
+          <a href="#customers" data-screen="customers"><span>◎</span> Customers</a>
+          <a href="#reports" data-screen="reports"><span>↗</span> Reports</a>
+          <p>System</p>
+          <a href="#settings" data-screen="settings"><span>⚙</span> Settings</a>
+        </nav>
+        <div class="sidebar-footer">
+          <div class="avatar">AK</div>
+          <div><strong>Arun Kumar</strong><small>Administrator</small></div>
+          <button id="logout-button" title="Sign out">↪</button>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <button class="menu-button" id="menu-button" aria-label="Open navigation">☰</button>
+          <div>
+            <h1 id="page-title">Dashboard</h1>
+            <p id="page-subtitle">Sunday, 26 July 2026</p>
+          </div>
+          <div class="top-actions">
+            <button class="icon-button" title="Notifications">●<i></i></button>
+            <div class="business-chip"><span>TO</span><div><strong>TigerOne Demo</strong><small>Coimbatore</small></div></div>
+          </div>
+        </header>
+
+        <div class="screen active" id="dashboard">
+          <section class="hero-card">
+            <div><span class="eyebrow">Today at a glance</span><h2>Good evening, Arun.</h2><p>Your business is moving well. Here is what needs your attention.</p></div>
+            <button class="primary-button" data-open="new-invoice">+ Create invoice</button>
+          </section>
+          <section class="metrics">
+            <article><span class="metric-icon amber">₹</span><small>Today’s sales</small><strong>₹48,750</strong><em class="positive">↑ 12.4% from yesterday</em></article>
+            <article><span class="metric-icon green">✓</span><small>Payments received</small><strong>₹36,200</strong><em>7 transactions</em></article>
+            <article><span class="metric-icon blue">▦</span><small>Inventory value</small><strong>₹8.42L</strong><em>1,248 items in stock</em></article>
+            <article><span class="metric-icon red">!</span><small>Low stock items</small><strong>12</strong><em class="negative">Needs attention</em></article>
+          </section>
+          <section class="content-grid">
+            <article class="panel wide">
+              <div class="panel-head"><div><span class="section-label">Performance</span><h3>Sales overview</h3></div><select><option>Last 7 days</option><option>This month</option></select></div>
+              <div class="chart">
+                <div class="chart-y"><span>60k</span><span>40k</span><span>20k</span><span>0</span></div>
+                <div class="bars">
+                  <div style="--h:48%"><i></i><span>Mon</span></div><div style="--h:63%"><i></i><span>Tue</span></div><div style="--h:44%"><i></i><span>Wed</span></div><div style="--h:78%"><i></i><span>Thu</span></div><div style="--h:59%"><i></i><span>Fri</span></div><div style="--h:88%"><i></i><span>Sat</span></div><div style="--h:72%"><i></i><span>Sun</span></div>
+                </div>
+              </div>
+            </article>
+            <article class="panel">
+              <div class="panel-head"><div><span class="section-label">Action centre</span><h3>Needs attention</h3></div></div>
+              <div class="attention-list">
+                <button data-screen-link="inventory"><b class="red">12</b><span><strong>Low stock products</strong><small>Review and reorder</small></span><i>›</i></button>
+                <button data-screen-link="billing"><b class="amber">8</b><span><strong>Overdue invoices</strong><small>₹72,450 outstanding</small></span><i>›</i></button>
+                <button data-screen-link="customers"><b class="blue">3</b><span><strong>New customers</strong><small>Added this week</small></span><i>›</i></button>
+              </div>
+            </article>
+          </section>
+          <section class="panel">
+            <div class="panel-head"><div><span class="section-label">Recent activity</span><h3>Latest invoices</h3></div><button class="text-button" data-screen-link="billing">View all →</button></div>
+            <div class="table-wrap"><table><thead><tr><th>Invoice</th><th>Customer</th><th>Date</th><th>Amount</th><th>Status</th></tr></thead><tbody>
+              <tr><td><strong>#INV-1048</strong></td><td>Arun Electricals</td><td>26 Jul, 6:12 PM</td><td><strong>₹12,450</strong></td><td><span class="badge paid">Paid</span></td></tr>
+              <tr><td><strong>#INV-1047</strong></td><td>Sri Lakshmi Traders</td><td>26 Jul, 4:38 PM</td><td><strong>₹8,920</strong></td><td><span class="badge pending">Pending</span></td></tr>
+              <tr><td><strong>#INV-1046</strong></td><td>Metro Hardware</td><td>26 Jul, 1:20 PM</td><td><strong>₹18,600</strong></td><td><span class="badge paid">Paid</span></td></tr>
+            </tbody></table></div>
+          </section>
+        </div>
+
+        <div class="screen" id="billing">
+          <section class="screen-toolbar"><div><span class="section-label">Sales</span><h2>Invoices</h2><p>Create, track and collect customer payments.</p></div><button class="primary-button" data-open="new-invoice">+ New invoice</button></section>
+          <section class="mini-metrics"><article><small>Total invoiced</small><strong>₹4.82L</strong><em>This month</em></article><article><small>Collected</small><strong>₹3.94L</strong><em class="positive">81.7%</em></article><article><small>Outstanding</small><strong>₹88,200</strong><em>14 invoices</em></article><article><small>Overdue</small><strong>₹32,450</strong><em class="negative">8 invoices</em></article></section>
+          <section class="panel">
+            <div class="filter-row"><div class="search"><span>⌕</span><input placeholder="Search invoice or customer" /></div><select><option>All statuses</option><option>Paid</option><option>Pending</option><option>Overdue</option></select><button class="secondary-button">Export</button></div>
+            <div class="table-wrap"><table><thead><tr><th>Invoice</th><th>Customer</th><th>Issued</th><th>Due date</th><th>Amount</th><th>Status</th><th></th></tr></thead><tbody>
+              <tr><td><strong>#INV-1048</strong></td><td>Arun Electricals</td><td>26 Jul 2026</td><td>26 Jul 2026</td><td><strong>₹12,450</strong></td><td><span class="badge paid">Paid</span></td><td>•••</td></tr>
+              <tr><td><strong>#INV-1047</strong></td><td>Sri Lakshmi Traders</td><td>26 Jul 2026</td><td>02 Aug 2026</td><td><strong>₹8,920</strong></td><td><span class="badge pending">Pending</span></td><td>•••</td></tr>
+              <tr><td><strong>#INV-1045</strong></td><td>Jaya Agencies</td><td>20 Jul 2026</td><td>25 Jul 2026</td><td><strong>₹15,280</strong></td><td><span class="badge overdue">Overdue</span></td><td>•••</td></tr>
+              <tr><td><strong>#INV-1044</strong></td><td>Kovai Tools</td><td>19 Jul 2026</td><td>26 Jul 2026</td><td><strong>₹6,740</strong></td><td><span class="badge pending">Pending</span></td><td>•••</td></tr>
+            </tbody></table></div>
+          </section>
+        </div>
+
+        <div class="screen" id="inventory">
+          <section class="screen-toolbar"><div><span class="section-label">Stock control</span><h2>Inventory</h2><p>Know what is available, moving and running low.</p></div><button class="primary-button" data-toast="Product form will be added after discussion">+ Add product</button></section>
+          <section class="mini-metrics"><article><small>Total products</small><strong>386</strong><em>24 categories</em></article><article><small>Stock value</small><strong>₹8.42L</strong><em>At purchase price</em></article><article><small>Low stock</small><strong>12</strong><em class="negative">Reorder soon</em></article><article><small>Out of stock</small><strong>4</strong><em class="negative">Immediate action</em></article></section>
+          <section class="panel">
+            <div class="filter-row"><div class="search"><span>⌕</span><input placeholder="Search product, SKU or category" /></div><select><option>All categories</option><option>Electrical</option><option>Hardware</option></select><button class="secondary-button">Stock adjustment</button></div>
+            <div class="table-wrap"><table><thead><tr><th>Product</th><th>SKU</th><th>Category</th><th>In stock</th><th>Unit price</th><th>Status</th></tr></thead><tbody>
+              <tr><td><strong>Finolex Copper Wire 1.5mm</strong></td><td>FW-150-R</td><td>Electrical</td><td><strong>84 rolls</strong></td><td>₹1,820</td><td><span class="badge paid">In stock</span></td></tr>
+              <tr><td><strong>Anchor Roma 6A Switch</strong></td><td>AR-6A-W</td><td>Electrical</td><td><strong>8 pcs</strong></td><td>₹92</td><td><span class="badge pending">Low stock</span></td></tr>
+              <tr><td><strong>Taparia Combination Plier</strong></td><td>TP-1621</td><td>Tools</td><td><strong>0 pcs</strong></td><td>₹485</td><td><span class="badge overdue">Out of stock</span></td></tr>
+              <tr><td><strong>Legrand MCB 32A DP</strong></td><td>LG-32-DP</td><td>Electrical</td><td><strong>42 pcs</strong></td><td>₹620</td><td><span class="badge paid">In stock</span></td></tr>
+            </tbody></table></div>
+          </section>
+        </div>
+
+        <div class="screen" id="customers">
+          <section class="screen-toolbar"><div><span class="section-label">Relationships</span><h2>Customers</h2><p>Customer balances, activity and contact details.</p></div><button class="primary-button" data-toast="Customer form will be added after discussion">+ Add customer</button></section>
+          <section class="customer-grid">
+            <article class="customer-card"><div><span>AE</span><i class="active-dot"></i></div><h3>Arun Electricals</h3><p>Coimbatore · GST registered</p><dl><dt>Total sales</dt><dd>₹1.24L</dd><dt>Balance due</dt><dd>₹12,450</dd></dl><button>View customer →</button></article>
+            <article class="customer-card"><div><span>SL</span><i class="active-dot"></i></div><h3>Sri Lakshmi Traders</h3><p>Erode · GST registered</p><dl><dt>Total sales</dt><dd>₹96,400</dd><dt>Balance due</dt><dd>₹8,920</dd></dl><button>View customer →</button></article>
+            <article class="customer-card"><div><span>MH</span><i class="active-dot"></i></div><h3>Metro Hardware</h3><p>Salem · GST registered</p><dl><dt>Total sales</dt><dd>₹82,850</dd><dt>Balance due</dt><dd>₹0</dd></dl><button>View customer →</button></article>
+            <article class="customer-card add-card"><b>+</b><h3>Add a customer</h3><p>Create a new customer profile</p></article>
+          </section>
+        </div>
+
+        <div class="screen" id="reports">
+          <section class="screen-toolbar"><div><span class="section-label">Business intelligence</span><h2>Reports</h2><p>Clear numbers for faster, more confident decisions.</p></div><div class="date-chip">01 Jul — 26 Jul 2026</div></section>
+          <section class="report-grid">
+            <article class="panel report-card"><span class="metric-icon amber">₹</span><div><small>Sales report</small><h3>₹4,82,350</h3><p>Gross sales this month</p></div><button>Open report →</button></article>
+            <article class="panel report-card"><span class="metric-icon green">↗</span><div><small>Profit summary</small><h3>₹1,18,420</h3><p>24.5% gross margin</p></div><button>Open report →</button></article>
+            <article class="panel report-card"><span class="metric-icon blue">▦</span><div><small>Stock report</small><h3>₹8,42,180</h3><p>Current inventory value</p></div><button>Open report →</button></article>
+            <article class="panel report-card"><span class="metric-icon red">!</span><div><small>Receivables</small><h3>₹88,200</h3><p>Pending customer balance</p></div><button>Open report →</button></article>
+          </section>
+          <section class="content-grid">
+            <article class="panel wide"><div class="panel-head"><div><span class="section-label">Revenue trend</span><h3>Monthly performance</h3></div></div><div class="line-chart"><div class="line-fill"></div><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span></div></article>
+            <article class="panel"><div class="panel-head"><div><span class="section-label">Top categories</span><h3>Sales mix</h3></div></div><div class="progress-list"><label>Electrical <span>42%</span><i style="--w:42%"></i></label><label>Hardware <span>28%</span><i style="--w:28%"></i></label><label>Tools <span>18%</span><i style="--w:18%"></i></label><label>Others <span>12%</span><i style="--w:12%"></i></label></div></article>
+          </section>
+        </div>
+
+        <div class="screen" id="settings">
+          <section class="screen-toolbar"><div><span class="section-label">System</span><h2>Settings</h2><p>Business profile, invoice preferences and team access.</p></div><button class="primary-button" data-toast="Settings saved for prototype">Save changes</button></section>
+          <section class="settings-layout">
+            <nav class="settings-nav"><button class="active">Business profile</button><button>Invoice settings</button><button>Taxes & GST</button><button>Team & access</button><button>Notifications</button></nav>
+            <form class="panel settings-form">
+              <div class="panel-head"><div><span class="section-label">Company details</span><h3>Business profile</h3></div></div>
+              <div class="logo-upload"><img src="assets/tigerone-mark.png" alt="" /><div><strong>TigerOne Demo Company</strong><small>Business logo</small></div><button type="button" class="secondary-button">Change</button></div>
+              <div class="form-grid"><label>Business name<input value="TigerOne Demo Company" /></label><label>GSTIN<input value="33ABCDE1234F1Z5" /></label><label>Email<input value="accounts@tigerone.in" /></label><label>Phone<input value="+91 98765 43210" /></label><label class="full">Business address<textarea>48, Avinashi Road, Coimbatore, Tamil Nadu — 641018</textarea></label></div>
+            </form>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal-backdrop" id="invoice-modal" hidden>
+      <section class="modal" role="dialog" aria-modal="true" aria-labelledby="invoice-title">
+        <div class="modal-head"><div><span class="section-label">New transaction</span><h2 id="invoice-title">Create invoice</h2></div><button id="close-modal" aria-label="Close">×</button></div>
+        <div class="form-grid"><label>Customer<select><option>Choose customer</option><option>Arun Electricals</option><option>Sri Lakshmi Traders</option></select></label><label>Invoice date<input type="date" value="2026-07-26" /></label><label class="full">Product / service<input value="Finolex Copper Wire 1.5mm" /></label><label>Quantity<input type="number" value="2" /></label><label>Rate<input value="₹1,820" /></label></div>
+        <div class="invoice-total"><span>Invoice total</span><strong>₹4,294.40</strong><small>Including 18% GST</small></div>
+        <div class="modal-actions"><button class="secondary-button" id="cancel-modal">Cancel</button><button class="primary-button" data-toast="Draft invoice created for prototype">Create draft invoice</button></div>
+      </section>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
