@@ -8,6 +8,7 @@ const toast = document.querySelector("#toast");
 
 const screenCopy = {
   dashboard: ["Dashboard", "Sunday, 26 July 2026"],
+  orders: ["Orders", "Jobs, production and billing"],
   "create-order": ["Create Order", "New printing job"],
   billing: ["Billing", "Invoices, payments and collections"],
   inventory: ["Inventory", "Products, stock and movements"],
@@ -222,6 +223,37 @@ document.querySelector("#job-work-list").addEventListener("click", (event) => {
   updateOrderSummary();
 });
 syncOrderModules();
+
+const orderSearch = document.querySelector("#order-search");
+const orderStageFilter = document.querySelector("#order-stage-filter");
+const orderBillingFilter = document.querySelector("#order-billing-filter");
+let orderStatusFilter = "all";
+
+function filterOrders() {
+  const query = orderSearch.value.trim().toLowerCase();
+  let visible = 0;
+  document.querySelectorAll("[data-order-row]").forEach((row) => {
+    const statusMatch = orderStatusFilter === "all" || row.dataset.status === orderStatusFilter;
+    const stageMatch = orderStageFilter.value === "all" || row.dataset.stage === orderStageFilter.value;
+    const billingMatch = orderBillingFilter.value === "all" || row.dataset.billing === orderBillingFilter.value;
+    const searchMatch = !query || row.dataset.search.includes(query);
+    const show = statusMatch && stageMatch && billingMatch && searchMatch;
+    row.hidden = !show;
+    if (show) visible += 1;
+  });
+  document.querySelector("#empty-orders").hidden = visible !== 0;
+  document.querySelector("#order-result-count").textContent = `Showing ${visible} prototype order${visible === 1 ? "" : "s"}`;
+}
+
+document.querySelectorAll("[data-order-filter]").forEach((button) => button.addEventListener("click", () => {
+  orderStatusFilter = button.dataset.orderFilter;
+  document.querySelectorAll("[data-order-filter]").forEach((item) => item.classList.toggle("active", item === button));
+  filterOrders();
+}));
+orderSearch.addEventListener("input", filterOrders);
+orderStageFilter.addEventListener("change", filterOrders);
+orderBillingFilter.addEventListener("change", filterOrders);
+filterOrders();
 
 window.addEventListener("hashchange", () => {
   const screen = location.hash.slice(1);

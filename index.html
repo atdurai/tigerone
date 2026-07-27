@@ -56,6 +56,7 @@
         <nav>
           <a href="#dashboard" data-screen="dashboard" class="active"><span>⌂</span> Dashboard</a>
           <p>Operations</p>
+          <a href="#orders" data-screen="orders"><span>☷</span> Orders</a>
           <a href="#create-order" data-screen="create-order"><span>＋</span> Create order</a>
           <a href="#billing" data-screen="billing"><span>₹</span> Billing</a>
           <a href="#inventory" data-screen="inventory"><span>▦</span> Inventory</a>
@@ -183,7 +184,7 @@
           <section class="panel production-panel">
             <div class="panel-head">
               <div><span class="section-label">Live workflow</span><h3>Production pipeline</h3></div>
-              <button class="text-button" data-toast="Complete order board will be added next">Open order board →</button>
+              <button class="text-button" data-screen-link="orders">Open order board →</button>
             </div>
             <div class="pipeline">
               <article><span>01</span><div><small>New orders</small><strong>4</strong></div><em>Estimate & confirm</em></article><i>→</i>
@@ -218,13 +219,69 @@
           
 
           <section class="panel">
-            <div class="panel-head"><div><span class="section-label">Recent activity</span><h3>Latest orders</h3></div><button class="text-button" data-toast="Full order list is the next prototype screen">View all orders →</button></div>
+            <div class="panel-head"><div><span class="section-label">Recent activity</span><h3>Latest orders</h3></div><button class="text-button" data-screen-link="orders">View all orders →</button></div>
             <div class="table-wrap"><table><thead><tr><th>Order</th><th>Customer & job</th><th>Required material</th><th>Delivery</th><th>Amount</th><th>Stage</th></tr></thead><tbody>
               <tr><td><strong>ORD-1036</strong></td><td><strong>Spice Garden</strong><br><small>Menu boards · Sunboard × 12</small></td><td>12 sheets</td><td>27 Jul, 4:00 PM</td><td><strong>₹14,800</strong></td><td><span class="badge design">Design</span></td></tr>
               <tr><td><strong>ORD-1034</strong></td><td><strong>RK Events</strong><br><small>Stage backdrop · 20 × 10 ft</small></td><td>200 sq. ft.</td><td>Today, 12:30 PM</td><td><strong>₹12,450</strong></td><td><span class="badge pending">Printing</span></td></tr>
               <tr><td><strong>ORD-1031</strong></td><td><strong>Sri Murugan Stores</strong><br><small>Flex banners · 8 × 4 ft × 5</small></td><td>160 sq. ft.</td><td>Today, 3:00 PM</td><td><strong>₹8,920</strong></td><td><span class="badge finishing">Finishing</span></td></tr>
               <tr><td><strong>ORD-1028</strong></td><td><strong>Greenfield School</strong><br><small>Outdoor campaign vinyl</small></td><td>240 sq. ft.</td><td>Today, 5:30 PM</td><td><strong>₹18,600</strong></td><td><span class="badge paid">Ready</span></td></tr>
             </tbody></table></div>
+          </section>
+        </div>
+
+        <div class="screen" id="orders">
+          <section class="screen-toolbar">
+            <div><span class="section-label">Order management</span><h2>Orders</h2><p>Track every job from enquiry and design through production, billing and delivery.</p></div>
+            <button class="primary-button" data-screen-link="create-order">+ Create new order</button>
+          </section>
+
+          <section class="order-metrics">
+            <button class="active" data-order-filter="all"><small>Total orders</small><strong>24</strong><em>₹2.84L order value</em></button>
+            <button data-order-filter="new"><small>New</small><strong>4</strong><em>Needs confirmation</em></button>
+            <button data-order-filter="progress"><small>In progress</small><strong>7</strong><em>Design to finishing</em></button>
+            <button data-order-filter="completed"><small>Completed</small><strong>5</strong><em>Ready to bill</em></button>
+            <button data-order-filter="delivered"><small>Delivered</small><strong>6</strong><em>2 payments pending</em></button>
+            <button data-order-filter="pending"><small>Pending</small><strong>2</strong><em>Customer action needed</em></button>
+          </section>
+
+          <section class="panel orders-panel">
+            <div class="orders-filter-row">
+              <div class="search"><span>⌕</span><input id="order-search" placeholder="Search order, customer, job or mobile" /></div>
+              <select id="order-stage-filter"><option value="all">All stages</option><option value="new">New</option><option value="design">Design</option><option value="printing">Printing</option><option value="finishing">Finishing</option><option value="ready">Ready</option><option value="delivered">Delivered</option></select>
+              <select id="order-billing-filter"><option value="all">All billing</option><option value="unbilled">Unbilled</option><option value="invoiced">Invoiced</option><option value="partial">Part paid</option><option value="paid">Paid</option><option value="non-billable">Non-billable</option></select>
+              <button class="secondary-button" data-toast="Order report exported for prototype">Export</button>
+            </div>
+
+            <div class="orders-table-wrap table-wrap">
+              <table class="orders-table">
+                <thead><tr><th>Order & date</th><th>Customer & job</th><th>Delivery</th><th>Production stage</th><th>Order value</th><th>Billing</th><th>Actions</th></tr></thead>
+                <tbody id="orders-body">
+                  <tr data-order-row data-status="new" data-stage="new" data-billing="unbilled" data-search="ord-1037 global fashions storefront flex 9876512049">
+                    <td><strong>ORD-1037</strong><small>27 Jul · 10:24 AM</small></td><td><strong>Global Fashions</strong><small>Storefront flex · 12 × 4 ft × 2</small></td><td><strong>29 Jul, 11:00 AM</strong><small>Customer pickup</small></td><td><span class="order-stage new">New</span><small>Estimate pending</small></td><td><strong>₹8,460</strong><small>Advance ₹0</small></td><td><span class="billing-state unbilled">Unbilled</span><small>Invoice later</small></td><td><div class="row-actions"><button data-screen-link="create-order">Edit</button><button data-toast="ORD-1037 opened in order details">View</button><button data-toast="Confirm the order before invoicing">Invoice</button></div></td>
+                  </tr>
+                  <tr data-order-row data-status="progress" data-stage="design" data-billing="partial" data-search="ord-1036 spice garden restaurant menu boards sunboard">
+                    <td><strong>ORD-1036</strong><small>27 Jul · 09:15 AM</small></td><td><strong>Spice Garden</strong><small>Restaurant menu boards · Sunboard × 12</small></td><td><strong>28 Jul, 4:00 PM</strong><small>Local delivery</small></td><td><span class="order-stage design">Design</span><small>Approval pending</small></td><td><strong>₹14,800</strong><small>Advance ₹5,000</small></td><td><span class="billing-state partial">Part paid</span><small>Balance ₹9,800</small></td><td><div class="row-actions"><button data-screen-link="create-order">Edit</button><button data-toast="ORD-1036 opened in order details">View</button><button data-toast="Invoice preview created from ORD-1036">Invoice</button></div></td>
+                  </tr>
+                  <tr data-order-row data-status="progress" data-stage="printing" data-billing="unbilled" data-search="ord-1034 rk events birthday stage backdrop flex">
+                    <td><strong>ORD-1034</strong><small>26 Jul · 06:12 PM</small></td><td><strong>RK Events</strong><small>Birthday stage backdrop · 20 × 10 ft</small></td><td><strong class="due-soon">Today, 12:30 PM</strong><small>Venue installation</small></td><td><span class="order-stage printing">Printing</span><small>Eco Solvent 01</small></td><td><strong>₹12,450</strong><small>Advance ₹3,000</small></td><td><span class="billing-state unbilled">Unbilled</span><small>Balance ₹9,450</small></td><td><div class="row-actions"><button data-screen-link="create-order">Edit</button><button data-toast="ORD-1034 opened in order details">View</button><button data-toast="Invoice preview created from ORD-1034">Invoice</button></div></td>
+                  </tr>
+                  <tr data-order-row data-status="progress" data-stage="finishing" data-billing="invoiced" data-search="ord-1031 sri murugan stores opening flex banners">
+                    <td><strong>ORD-1031</strong><small>26 Jul · 02:45 PM</small></td><td><strong>Sri Murugan Stores</strong><small>Opening flex banners · 8 × 4 ft × 5</small></td><td><strong class="due-soon">Today, 3:00 PM</strong><small>Customer pickup</small></td><td><span class="order-stage finishing">Finishing</span><small>Eyelets in progress</small></td><td><strong>₹8,920</strong><small>Advance ₹4,000</small></td><td><span class="billing-state invoiced">INV-1047</span><small>Balance ₹4,920</small></td><td><div class="row-actions"><button data-screen-link="create-order">Edit</button><button data-toast="ORD-1031 opened in order details">View</button><button data-screen-link="billing">Invoice</button></div></td>
+                  </tr>
+                  <tr data-order-row data-status="completed" data-stage="ready" data-billing="unbilled" data-search="ord-1029 bright mobiles promotional vinyl stickers">
+                    <td><strong>ORD-1029</strong><small>25 Jul · 05:18 PM</small></td><td><strong>Bright Mobiles</strong><small>Promotional vinyl stickers · 240 pcs</small></td><td><strong>Today, 5:00 PM</strong><small>Customer pickup</small></td><td><span class="order-stage ready">Ready</span><small>Quality checked</small></td><td><strong>₹6,840</strong><small>Advance ₹2,000</small></td><td><span class="billing-state unbilled">Unbilled</span><small>Ready to invoice</small></td><td><div class="row-actions"><button data-screen-link="create-order">Edit</button><button data-toast="ORD-1029 opened in order details">View</button><button class="invoice-action" data-toast="Invoice preview created from ORD-1029">Convert to invoice</button></div></td>
+                  </tr>
+                  <tr data-order-row data-status="delivered" data-stage="delivered" data-billing="paid" data-search="ord-1028 greenfield school outdoor campaign vinyl">
+                    <td><strong>ORD-1028</strong><small>24 Jul · 11:32 AM</small></td><td><strong>Greenfield School</strong><small>Outdoor campaign vinyl · 240 sq. ft.</small></td><td><strong>Delivered 26 Jul</strong><small>Local delivery</small></td><td><span class="order-stage delivered">Delivered</span><small>Closed by Arun</small></td><td><strong>₹18,600</strong><small>Fully received</small></td><td><span class="billing-state paid">Paid</span><small>INV-1046</small></td><td><div class="row-actions"><button data-toast="Delivered orders require admin approval to edit">Reopen</button><button data-toast="ORD-1028 opened in order details">View</button><button data-screen-link="billing">Invoice</button></div></td>
+                  </tr>
+                  <tr data-order-row data-status="pending" data-stage="design" data-billing="non-billable" data-search="ord-1026 internal sample print colour test">
+                    <td><strong>ORD-1026</strong><small>23 Jul · 03:10 PM</small></td><td><strong>Internal job</strong><small>Sample print · Colour calibration</small></td><td><strong>No deadline</strong><small>Internal use</small></td><td><span class="order-stage pending">Pending</span><small>Operator availability</small></td><td><strong>₹0</strong><small>Internal cost ₹640</small></td><td><span class="billing-state non-billable">Non-billable</span><small>Internal sample</small></td><td><div class="row-actions"><button data-screen-link="create-order">Edit</button><button data-toast="ORD-1026 opened in order details">View</button><button disabled>Invoice</button></div></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="empty-orders" id="empty-orders" hidden><span>⌕</span><h3>No matching orders</h3><p>Try a different search or filter.</p></div>
+            </div>
+            <footer class="table-footer"><span id="order-result-count">Showing 7 prototype orders</span><div><button disabled>←</button><b>1</b><button>2</button><button>→</button></div></footer>
           </section>
         </div>
 
