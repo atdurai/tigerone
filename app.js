@@ -8,6 +8,7 @@ const toast = document.querySelector("#toast");
 
 const screenCopy = {
   dashboard: ["Dashboard", "Sunday, 26 July 2026"],
+  "create-order": ["Create Order", "New printing job"],
   billing: ["Billing", "Invoices, payments and collections"],
   inventory: ["Inventory", "Products, stock and movements"],
   customers: ["Customers", "Relationships and balances"],
@@ -71,6 +72,157 @@ document.querySelector("#logout-button").addEventListener("click", () => {
   loginView.hidden = false;
   location.hash = "";
 });
+const assistantButton = document.querySelector("#assistant-button");
+const assistantInput = document.querySelector("#assistant-input");
+if (assistantButton && assistantInput) {
+  assistantButton.addEventListener("click", () => {
+    showToast(assistantInput.value.trim() ? `Prototype question received: ${assistantInput.value.trim()}` : "Try asking about delayed orders, stock or payments");
+    assistantInput.value = "";
+  });
+  assistantInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") assistantButton.click();
+  });
+}
+
+const orderFields = {
+  customer: document.querySelector("#order-customer"),
+  product: document.querySelector("#product-type"),
+  job: document.querySelector("#job-name"),
+  width: document.querySelector("#job-width"),
+  height: document.querySelector("#job-height"),
+  quantity: document.querySelector("#job-quantity"),
+  material: document.querySelector("#order-material"),
+  rate: document.querySelector("#selling-rate"),
+  finishing: document.querySelector("#finishing-charge"),
+  design: document.querySelector("#design-charge"),
+  discount: document.querySelector("#order-discount"),
+  tax: document.querySelector("#order-tax"),
+  advance: document.querySelector("#order-advance"),
+  delivery: document.querySelector("#delivery-date"),
+};
+
+const moduleLabels = {
+  material: "Material",
+  design: "Design",
+  "job-work": "Job work",
+  inventory: "Inventory reduction",
+  pricing: "Pricing",
+};
+const attachedModules = new Set(["material", "design", "pricing"]);
+
+function syncOrderModules() {
+  document.querySelectorAll("[data-order-module]").forEach((section) => {
+    section.hidden = !attachedModules.has(section.dataset.orderModule);
+  });
+  document.querySelectorAll("[data-module-toggle]").forEach((button) => {
+    const attached = attachedModules.has(button.dataset.moduleToggle);
+    button.classList.toggle("attached", attached);
+    button.querySelector("em").textContent = attached ? "Remove" : "+ Add";
+  });
+  document.querySelector("#attached-module-count").textContent = attachedModules.size;
+  const summary = document.querySelector("#summary-modules");
+  summary.innerHTML = [...attachedModules].map((module) => `<span data-summary-module="${module}">${moduleLabels[module]}</span>`).join("");
+  updateOrderSummary();
+}
+
+const currency = (value) => `₹${Number(value || 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+function updateOrderSummary() {
+  const width = Math.max(0, Number(orderFields.width.value) || 0);
+  const height = Math.max(0, Number(orderFields.height.value) || 0);
+  const quantity = Math.max(1, Number(orderFields.quantity.value) || 1);
+  const area = width * height * quantity;
+  const stock = Number(orderFields.material.selectedOptions[0]?.dataset.stock || 0);
+  const remaining = stock - area;
+  const pricingEnabled = attachedModules.has("pricing");
+  const printing = pricingEnabled ? area * (Number(orderFields.rate.value) || 0) : 0;
+  const finishing = pricingEnabled && attachedModules.has("material") ? Number(orderFields.finishing.value) || 0 : 0;
+  const design = pricingEnabled && attachedModules.has("design") ? Number(orderFields.design.value) || 0 : 0;
+  const jobWork = pricingEnabled && attachedModules.has("job-work")
+    ? [...document.querySelectorAll(".job-work-charge")].reduce((sum, input) => sum + (Number(input.value) || 0), 0)
+    : 0;
+  const discount = Number(orderFields.discount.value) || 0;
+  const subtotal = Math.max(0, printing + finishing + design + jobWork - discount);
+  const tax = subtotal * ((Number(orderFields.tax.value) || 0) / 100);
+  const total = subtotal + tax;
+  const advance = Math.min(total, Number(orderFields.advance.value) || 0);
+
+  document.querySelector("#print-area").textContent = area.toFixed(area % 1 ? 1 : 0);
+  document.querySelector("#material-required").textContent = area.toFixed(area % 1 ? 1 : 0);
+  document.querySelector("#material-available").textContent = stock;
+  document.querySelector("#material-remaining").textContent = remaining.toFixed(remaining % 1 ? 1 : 0);
+  document.querySelector("#allocation-quantity").textContent = area.toFixed(area % 1 ? 1 : 0);
+  const status = document.querySelector("#material-status");
+  status.textContent = remaining >= 0 ? "Stock available" : `Short by ${Math.abs(remaining).toFixed(1)} sq. ft.`;
+  status.className = remaining >= 0 ? "stock-ok" : "stock-short";
+
+  document.querySelector("#summary-job").textContent = orderFields.job.value || "Untitled printing job";
+  document.querySelector("#summary-customer").textContent = orderFields.customer.value || "No customer selected";
+  document.querySelector("#summary-product").textContent = orderFields.product.value;
+  document.querySelector("#summary-size").textContent = `${width} × ${height} ft`;
+  document.querySelector("#summary-quantity").textContent = quantity;
+  document.querySelector("#summary-area").textContent = area.toFixed(area % 1 ? 1 : 0);
+  document.querySelector("#printing-total").textContent = currency(printing);
+  document.querySelector("#finishing-total").textContent = currency(finishing);
+  document.querySelector("#design-total").textContent = currency(design);
+  document.querySelector("#job-work-total").textContent = currency(jobWork);
+  document.querySelector("#discount-total").textContent = `− ${currency(discount)}`;
+  document.querySelector("#tax-total").textContent = currency(tax);
+  document.querySelector("#order-total").textContent = currency(total);
+  document.querySelector("#advance-total").textContent = currency(advance);
+  document.querySelector("#balance-total").textContent = currency(total - advance);
+
+  const delivery = orderFields.delivery.value ? new Date(orderFields.delivery.value) : null;
+  document.querySelector("#summary-delivery").textContent = delivery && !Number.isNaN(delivery.valueOf())
+    ? delivery.toLocaleString("en-IN", { day: "2-digit", month: "short", year: "numeric", hour: "numeric", minute: "2-digit" })
+    : "Not scheduled";
+}
+
+Object.values(orderFields).forEach((field) => field.addEventListener("input", updateOrderSummary));
+document.querySelectorAll("[data-module-toggle]").forEach((button) => button.addEventListener("click", () => {
+  const module = button.dataset.moduleToggle;
+  if (attachedModules.has(module)) attachedModules.delete(module);
+  else attachedModules.add(module);
+  syncOrderModules();
+}));
+document.querySelectorAll("[data-remove-module]").forEach((button) => button.addEventListener("click", () => {
+  attachedModules.delete(button.dataset.removeModule);
+  syncOrderModules();
+  document.querySelector(".module-picker").scrollIntoView({ behavior: "smooth", block: "center" });
+}));
+document.querySelectorAll("[data-size]").forEach((button) => button.addEventListener("click", () => {
+  const [width, height] = button.dataset.size.split("x");
+  orderFields.width.value = width;
+  orderFields.height.value = height;
+  updateOrderSummary();
+}));
+document.querySelectorAll("#save-order, #summary-save").forEach((button) => button.addEventListener("click", () => {
+  showToast("Draft order ORD-1037 created for prototype");
+}));
+document.querySelector("#clear-order").addEventListener("click", () => {
+  document.querySelector("#order-form").reset();
+  updateOrderSummary();
+  showToast("Order form reset");
+});
+document.querySelector("#add-job-work").addEventListener("click", () => {
+  document.querySelector("#job-work-list").insertAdjacentHTML("beforeend", `
+    <div class="job-work-row">
+      <label>Work type<select><option>Flex installation</option><option>Frame fitting</option><option>Site measurement</option><option>Transportation</option><option>Electrician work</option><option selected>Other manual work</option></select></label>
+      <label>Assigned to<input placeholder="Person or team" /></label>
+      <label>Estimated cost (₹)<input class="job-work-cost" type="number" min="0" value="0" /></label>
+      <label>Charge customer (₹)<input class="job-work-charge" type="number" min="0" value="0" /></label>
+      <button type="button" class="remove-row" aria-label="Remove job work">×</button>
+    </div>`);
+});
+document.querySelector("#job-work-list").addEventListener("input", updateOrderSummary);
+document.querySelector("#job-work-list").addEventListener("click", (event) => {
+  const removeButton = event.target.closest(".remove-row");
+  if (!removeButton) return;
+  removeButton.closest(".job-work-row").remove();
+  updateOrderSummary();
+});
+syncOrderModules();
+
 window.addEventListener("hashchange", () => {
   const screen = location.hash.slice(1);
   if (appShell.hidden === false && screenCopy[screen]) showScreen(screen);
